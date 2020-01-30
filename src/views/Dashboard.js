@@ -1,8 +1,12 @@
 import React from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import Loader from 'react-loader-spinner';
 
 import GraphSelectionButton from '../components/GraphSelectionButton';
+import Linegraph from '../components/Linegraph';
 import { DashboardHeaderContainer } from '../styles/DashboardHeaderContainer';
+import { LoaderContainer } from '../styles/LoaderContainer';
 
 const infoTypes = [
   'Water Temperature',
@@ -13,7 +17,25 @@ const infoTypes = [
   'Tubing Pressure',
 ];
 
+const GET_METRICS_QUERY = gql`
+  query GET_METRICS_QUERY {
+    getMetrics
+  }
+`;
+
 const Dashboard = () => {
+  const { loading, error, data } = useQuery(GET_METRICS_QUERY);
+  if (loading) {
+    return (
+      <LoaderContainer>
+        <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} />
+      </LoaderContainer>
+    );
+  }
+  if (error) return <p>Error</p>;
+
+  console.log(data);
+
   return (
     <>
       <DashboardHeaderContainer>
@@ -24,17 +46,7 @@ const Dashboard = () => {
           })}
         </div>
       </DashboardHeaderContainer>
-
-      <ResponsiveContainer height={500} width="100%">
-        <LineChart data={null}>
-          <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          <Line type="monotone" dataKey="thresholdVal" stroke="red" dot={false} />
-          <CartesianGrid stroke="black" strokeDasharray="5 5" />
-          <XAxis dataKey="timestamp" stroke="black" />
-          <YAxis stroke="black" />
-          <Tooltip />
-        </LineChart>
-      </ResponsiveContainer>
+      <Linegraph />
     </>
   );
 };

@@ -9,6 +9,21 @@ import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
 
+import LandingPage from './views/LandingPage';
+import { AppContainer } from './styles/AppStyles.js';
+
+const App = () => {
+  return (
+    <AppContainer>
+      <LandingPage />
+    </AppContainer>
+  );
+};
+
+export default App;
+
+/*
+
 const store = createStore();
 const theme = createMuiTheme({
   palette: {
@@ -24,7 +39,6 @@ const theme = createMuiTheme({
   },
 });
 
-const App = () => (
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
     <Provider store={store}>
@@ -35,6 +49,4 @@ const App = () => (
       </Wrapper>
     </Provider>
   </MuiThemeProvider>
-);
-
-export default App;
+*/

@@ -8,14 +8,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
+import { Route } from 'react-router-dom';
 
 import LandingPage from './views/LandingPage';
+import Dashboard from './views/Dashboard';
 import { AppContainer } from './styles/AppStyles.js';
 
 const App = () => {
   return (
     <AppContainer>
-      <LandingPage />
+      <Route exact path="/" component={LandingPage} />
+      <Route path="/dashboard" component={Dashboard} />
     </AppContainer>
   );
 };

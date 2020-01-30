@@ -17,6 +17,7 @@ export const LandingContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 15% 0;
   h2 {
     margin: 30px 0 0 0;
     font-size: 50px;

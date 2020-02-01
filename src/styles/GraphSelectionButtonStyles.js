@@ -8,4 +8,8 @@ export const GraphSelectionButtonStyle = styled.button`
   padding: 20px 40px;
   border-radius: 10px;
   cursor: pointer;
+  &:hover {
+    background: white;
+    color: black;
+  }
 `;

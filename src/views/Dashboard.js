@@ -7,15 +7,8 @@ import GraphSelectionButton from '../components/GraphSelectionButton';
 import Linegraph from '../components/Linegraph';
 import { DashboardHeaderContainer } from '../styles/DashboardHeaderContainer';
 import { LoaderContainer } from '../styles/LoaderContainer';
-
-const infoTypes = [
-  'Water Temperature',
-  'Casing Pressure',
-  'Injection Valve Open',
-  'Flare Temperature',
-  'Oil Temperature',
-  'Tubing Pressure',
-];
+import { DashboardContainer } from '../styles/DashboardContainer';
+import useLastMeasurement from '../hooks/useLastMeasurement';
 
 const GET_METRICS_QUERY = gql`
   query GET_METRICS_QUERY {
@@ -24,30 +17,36 @@ const GET_METRICS_QUERY = gql`
 `;
 
 const Dashboard = () => {
-  const { loading, error, data } = useQuery(GET_METRICS_QUERY);
-  if (loading) {
+  const [data, type, setType, loading] = useLastMeasurement('waterTemp');
+  const { loading: loadingMetrics, error: errorMetrics, data: dataMetrics } = useQuery(GET_METRICS_QUERY);
+
+  if (loadingMetrics) {
     return (
       <LoaderContainer>
         <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} />
       </LoaderContainer>
     );
   }
-  if (error) return <p>Error</p>;
-
-  console.log(data);
+  if (errorMetrics) return <p>Error</p>;
 
   return (
-    <>
+    <DashboardContainer>
       <DashboardHeaderContainer>
         <h2 style={{ margin: 0, fontSize: '32px' }}>Which information would you like to display?</h2>
         <div>
-          {infoTypes.map(type => {
-            return <GraphSelectionButton type={type} />;
+          {dataMetrics.getMetrics.map((type, id) => {
+            return <GraphSelectionButton key={id} type={type} setMetricType={setType} />;
           })}
         </div>
       </DashboardHeaderContainer>
-      <Linegraph />
-    </>
+      {loading ? (
+        <LoaderContainer>
+          <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} />
+        </LoaderContainer>
+      ) : (
+        <Linegraph dataMeasurements={data} type={type} />
+      )}
+    </DashboardContainer>
   );
 };
 

@@ -22,30 +22,26 @@ export const LandingContainer = styled.div`
     margin: 30px 0 0 0;
     font-size: 50px;
     font-family: 'Alata', sans-serif;
-    color: white;
+    color: black;
     text-align: center;
   }
   .logo {
     width: 20%;
   }
-  img {
-    width: 50%;
-    color: white;
-  }
   a {
     margin-top: 20px;
-    border: 2px solid white;
+    border: 2px solid black;
     border-radius: 50px;
     text-decoration: none;
-    color: white;
+    color: black;
     padding: 20px 50px;
     font-size: 24px;
     font-weight: bold;
     font-family: 'Alata', sans-serif;
     cursor: pointer;
     &:hover {
-      background: white;
-      color: black;
+      background: black;
+      color: white;
     }
   }
   @media (max-width: 800px) {

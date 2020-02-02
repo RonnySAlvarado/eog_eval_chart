@@ -12,7 +12,7 @@ Website: https://www.ronnyalvarado.dev
 
 # Deployed Project
 
-_In progress_
+https://eog-eval-charts.netlify.com/  
 
 # Tech Stack
 

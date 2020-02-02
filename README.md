@@ -7,8 +7,8 @@ Read more about this assessment [here](https://react.eogresources.com)
 
 Ronny Alvarado, environmental geologist and full stack software engineer.  
 GitHub: https://github.com/RonnySAlvarado  
-LinkedIn: https://www.linkedin.com/in/ronnysalvarado
-Website: https://www.ronnyalvarado.dev
+LinkedIn: https://www.linkedin.com/in/ronnysalvarado  
+Website: https://www.ronnyalvarado.dev  
 
 # Deployed Project
 

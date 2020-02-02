@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 const GET_MEASUREMENTS_QUERY = gql`
@@ -11,11 +11,36 @@ const GET_MEASUREMENTS_QUERY = gql`
   }
 `;
 
+const GET_MEASUREMENTS_SUBSCRIPTION = gql`
+  subscription newMeasurement {
+    newMeasurement {
+      metric
+      at
+      value
+    }
+  }
+`;
+
+const filterData = (dataArray, newDatapoint) => {
+  const newArray = dataArray.filter(dataPoint => {
+    return newDatapoint.at - dataPoint.at < 1800000;
+  });
+  newArray.push(newDatapoint);
+  return newArray;
+};
+
 const useLastMeasurement = metricType => {
   const client = useApolloClient();
   const [type, setType] = useState(metricType);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+  const { data: pushData, loading: pushLoading, error: pushError } = useSubscription(GET_MEASUREMENTS_SUBSCRIPTION, {
+    onSubscriptionData: options => {
+      if (type === options.subscriptionData.data.newMeasurement.metric) {
+        setData(filterData(data, options.subscriptionData.data.newMeasurement));
+      }
+    },
+  });
 
   const getLastMeasurements = useCallback(async () => {
     try {
@@ -39,7 +64,7 @@ const useLastMeasurement = metricType => {
     }
   }, [type, getLastMeasurements]);
 
-  return [data, type, setType, loading, getLastMeasurements];
+  return [data, type, setType, loading, getLastMeasurements, pushData, pushError];
 };
 
 export default useLastMeasurement;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Loader from 'react-loader-spinner';
@@ -17,8 +17,15 @@ const GET_METRICS_QUERY = gql`
 `;
 
 const Dashboard = () => {
-  const [data, type, setType, loading] = useLastMeasurement('waterTemp');
+  const [data, type, setType, loading, getLastMeasurements, pushData, pushError] = useLastMeasurement('waterTemp');
   const { loading: loadingMetrics, error: errorMetrics, data: dataMetrics } = useQuery(GET_METRICS_QUERY);
+
+  useEffect(() => {
+    if (pushData) {
+      console.log(pushData);
+      console.log(pushError);
+    }
+  }, [pushData, pushError]);
 
   if (loadingMetrics) {
     return (

@@ -29,12 +29,12 @@ const filterData = (dataArray, newDatapoint) => {
   return newArray;
 };
 
-const useLastMeasurement = metricType => {
+const useGetMeasurements = metricType => {
   const client = useApolloClient();
   const [type, setType] = useState(metricType);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
-  const { data: pushData, loading: pushLoading, error: pushError } = useSubscription(GET_MEASUREMENTS_SUBSCRIPTION, {
+  useSubscription(GET_MEASUREMENTS_SUBSCRIPTION, {
     onSubscriptionData: options => {
       if (type === options.subscriptionData.data.newMeasurement.metric) {
         setData(filterData(data, options.subscriptionData.data.newMeasurement));
@@ -64,7 +64,7 @@ const useLastMeasurement = metricType => {
     }
   }, [type, getLastMeasurements]);
 
-  return [data, type, setType, loading, getLastMeasurements, pushData, pushError];
+  return [data, type, setType, loading];
 };
 
-export default useLastMeasurement;
+export default useGetMeasurements;

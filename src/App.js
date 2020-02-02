@@ -1,5 +1,4 @@
 import React from 'react';
-import 'react-toastify/dist/ReactToastify.css';
 import { Route } from 'react-router-dom';
 
 import LandingPage from './views/LandingPage';

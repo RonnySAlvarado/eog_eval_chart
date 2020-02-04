@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Loader from 'react-loader-spinner';
 
 import GraphSelectionButton from '../components/GraphSelectionButton';
@@ -11,26 +11,36 @@ import useGetMeasurements from '../hooks/useGetMeasurements';
 const Dashboard = () => {
   const [loading, error, data] = useGetMeasurements();
   const metricList = ['waterTemp', 'casingPressure', 'injValveOpen', 'flareTemp', 'oilTemp', 'tubingPressure'];
+  const [view, setView] = useState([
+    'waterTemp',
+    'casingPressure',
+    'injValveOpen',
+    'flareTemp',
+    'oilTemp',
+    'tubingPressure',
+  ]);
 
-  return (
-    <DashboardContainer>
-      <DashboardHeaderContainer>
-        <h2 style={{ margin: 0, fontSize: '32px' }}>Which information would you like to display?</h2>
-        <div>
+  if (loading) {
+    return (
+      <LoaderContainer>
+        <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} />
+      </LoaderContainer>
+    );
+  } else {
+    return (
+      <DashboardContainer>
+        <DashboardHeaderContainer>
           {metricList.map((type, id) => {
-            return <GraphSelectionButton key={id} type={type} />;
+            let value =
+              data.getMultipleMeasurements[id].measurements[data.getMultipleMeasurements[id].measurements.length - 1]
+                .value;
+            return <GraphSelectionButton key={id} type={type} value={value} setView={setView} view={view} />;
           })}
-        </div>
-      </DashboardHeaderContainer>
-      {loading ? (
-        <LoaderContainer>
-          <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} />
-        </LoaderContainer>
-      ) : (
-        <Linegraph data={data} />
-      )}
-    </DashboardContainer>
-  );
+        </DashboardHeaderContainer>
+        <Linegraph data={data} view={view} />
+      </DashboardContainer>
+    );
+  }
 };
 
 export default Dashboard;

@@ -2,7 +2,7 @@ import React from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import moment from 'moment';
 
-const Linegraph = ({ data }) => {
+const Linegraph = ({ data, view }) => {
   const newDataArr = [];
   for (let i = 0; i < 1383; i++) {
     let newobj = {
@@ -16,14 +16,26 @@ const Linegraph = ({ data }) => {
     };
     newDataArr.push(newobj);
   }
-
   return (
     <>
       <ResponsiveContainer height={500} width="80%">
         <LineChart data={newDataArr}>
-          <Line type="monotone" dataKey="waterTempVal" stroke="#0000ff" dot={false} />
-          <Line type="monotone" dataKey="casingPressureVal" stroke="#FF0000" dot={false} />
-          <Line type="monotone" dataKey="injValveOpenVal" stroke="#ffff00" dot={false} />
+          {view.includes('waterTemp') ? (
+            <Line type="monotone" dataKey="waterTempVal" stroke="#6C345C" dot={false} />
+          ) : null}
+          {view.includes('casingPressure') ? (
+            <Line type="monotone" dataKey="casingPressureVal" stroke="#D5456D" dot={false} />
+          ) : null}
+          {view.includes('injValveOpen') ? (
+            <Line type="monotone" dataKey="injValveOpenVal" stroke="#FE886F" dot={false} />
+          ) : null}
+          {view.includes('flareTemp') ? (
+            <Line type="monotone" dataKey="flareTempVal" stroke="#FED13F" dot={false} />
+          ) : null}
+          {view.includes('oilTemp') ? <Line type="monotone" dataKey="oilTempVal" stroke="#A9436A" dot={false} /> : null}
+          {view.includes('tubingPressure') ? (
+            <Line type="monotone" dataKey="tubingPressureVal" stroke="#E9F9CB" dot={false} />
+          ) : null}
           <CartesianGrid stroke="black" strokeDasharray="5 5" />
           <XAxis dataKey="at" tick={{ fill: 'black' }} tickFormatter={tick => moment(tick).format('HH:mm')} />
           <YAxis tick={{ fill: 'black' }} />

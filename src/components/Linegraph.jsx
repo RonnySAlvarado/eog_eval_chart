@@ -41,12 +41,14 @@ const Linegraph = ({ data, view }) => {
           <CartesianGrid stroke="black" strokeDasharray="5 5" />
           <XAxis dataKey="at" tick={{ fill: 'black' }} tickFormatter={tick => moment(tick).format('HH:mm')} />
           {view.includes('waterTemp') || view.includes('flareTemp') || view.includes('oilTemp') ? (
-            <YAxis tick={{ fill: 'black' }} yAxisId="temperature" label="F" />
+            <YAxis tick={{ fill: 'black' }} yAxisId="temperature" label="Temp(F)" width={140} />
           ) : null}
           {view.includes('casingPressure') || view.includes('tubingPressure') ? (
-            <YAxis tick={{ fill: 'black' }} yAxisId="pressure" label="PSI" />
+            <YAxis tick={{ fill: 'black' }} yAxisId="pressure" label="PSI" width={120} />
           ) : null}
-          {view.includes('injValveOpen') ? <YAxis tick={{ fill: 'black' }} yAxisId="percentage" label="%" /> : null}
+          {view.includes('injValveOpen') ? (
+            <YAxis tick={{ fill: 'black' }} yAxisId="percentage" label="%" width={80} />
+          ) : null}
           <Tooltip labelFormatter={v => moment(v).format('HH:mm')} />
           <Legend />
         </LineChart>

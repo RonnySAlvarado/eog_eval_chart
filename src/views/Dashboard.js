@@ -20,6 +20,10 @@ const Dashboard = () => {
     'tubingPressure',
   ]);
 
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
   if (loading) {
     return (
       <LoaderContainer>

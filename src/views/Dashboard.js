@@ -24,7 +24,7 @@ const Dashboard = () => {
     return <p>Error: {error}</p>;
   }
 
-  if (loading) {
+  if (loading || data.getMultipleMeasurements === undefined) {
     return (
       <LoaderContainer>
         <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} />

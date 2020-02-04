@@ -85,6 +85,7 @@ const useGetMeasurements = () => {
     });
     return () => unsubscribe();
   }, [subscribeToMore]);
+
   return [loading, error, data];
 };
 

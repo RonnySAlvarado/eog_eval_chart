@@ -14,15 +14,18 @@ Website: https://www.ronnyalvarado.dev
 
 https://eog-eval-charts.netlify.com/  
 
+# Images
+![Graph1](https://i.imgur.com/KsacbQ2.png)
+![Graph2](https://i.imgur.com/KcbnlRt.png)
+
 # Tech Stack
 
 1. React / React Hooks
 2. React Router
 3. Apollo Client / GraphQL-Tag / Momentjs
-4. Styled-Components
+4. Styled-Components & Material UI
 5. Recharts
 6. React Loader Spinner
-7. React Testing Library / Jest
 
 # Project Setup
 
@@ -69,8 +72,18 @@ Upon entering the site, the contents of the page will fade in (5 seconds) and wi
 
 ### Dashboard
 
-Upon clicking the button, you will begin routing to the `/dashboard` route. At this time, a few queries will be running and while the incoming data has not been received, a `<Loader />` component will mount until the dataset comes in, in which our `loading` state will now be `false` and the `<Loader />` component will unmount and our `<Linegraph />` components will mount.
+Upon clicking the button, you will begin routing to the `/dashboard` route. At this time, a query will be run (`getMultipleMeasurements`) and while the incoming data has not been received, a `<Loader />` component will mount until the dataset comes in, in which our `loading` state will now be `false` and the `<Loader />` component will unmount and our `<Linegraph />` components will mount.
 
-### Linegraph
+### Performance
+The dataset comes in with the following shape:  
+![Incoming Data Shape from getMultipleMeasurements query](https://i.imgur.com/WgTcvMq.png)  
 
-This graph will show an X-axis that consists of timestamps from the current time to 30 minutes ago as well as the values associated with each of those times. The user of the application will then be able to view the graph being updated based on when a new piece of data value comes in through the `Subscriptions` that were setup by the API. While a data point comes in through the subscription, we had to mold the data so that it would essentially filter the prior data and pop off the ones where the current time - 1800000 (30 minutes ago) would only show so we make sure that it's only 30 minutes of data that is appearing on the graph.
+In order for us to use Recharts, we would have to shape the data in a way where we could have a single x-axis with multiple y-axis.
+Once the dataset came in, we shaped it to the following:
+![Shaped Dataset](https://i.imgur.com/zA3DnDd.png)  
+
+If there was additional time, the run time of this program could be heavily improved/optimized as the constant shaping of the data on every subscription value coming in is taxing. 
+
+### Linegraph & Metrics
+
+This graph will show an X-axis that consists of timestamps from the current time to 30 minutes ago as well as the values associated with each of those times. The user of the application will then be able to toggle the graph views. Note: Although you can toggle the views, the data will still be loaded, but just not viewed. This can be further optimized at a later time.

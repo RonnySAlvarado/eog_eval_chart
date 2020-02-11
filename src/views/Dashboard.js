@@ -9,7 +9,7 @@ import { DashboardContainer } from '../styles/DashboardContainer';
 import useGetMeasurements from '../hooks/useGetMeasurements';
 
 const Dashboard = () => {
-  const [loading, error, data] = useGetMeasurements();
+  const [loading, error, stateData] = useGetMeasurements();
   const metricList = ['waterTemp', 'casingPressure', 'injValveOpen', 'flareTemp', 'oilTemp', 'tubingPressure'];
   const [view, setView] = useState([
     'waterTemp',
@@ -24,7 +24,7 @@ const Dashboard = () => {
     return <p>Error: {error}</p>;
   }
 
-  if (loading || data.getMultipleMeasurements === undefined) {
+  if (loading || stateData.length === 0) {
     return (
       <LoaderContainer>
         <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} />
@@ -35,13 +35,11 @@ const Dashboard = () => {
       <DashboardContainer>
         <DashboardHeaderContainer>
           {metricList.map((type, id) => {
-            let value =
-              data.getMultipleMeasurements[id].measurements[data.getMultipleMeasurements[id].measurements.length - 1]
-                .value;
+            let value = stateData[stateData.length - 1][`${type}Val`];
             return <GraphSelectionButton key={id} type={type} value={value} setView={setView} view={view} />;
           })}
         </DashboardHeaderContainer>
-        <Linegraph data={data} view={view} />
+        <Linegraph stateData={stateData} view={view} />
       </DashboardContainer>
     );
   }
